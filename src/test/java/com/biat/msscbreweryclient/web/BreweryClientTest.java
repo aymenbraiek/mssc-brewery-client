@@ -33,7 +33,22 @@ class BreweryClientTest {
                 .beerStyle("api")
                 .build();
         System.out.println(beerDto.toString());
-        URI location = breweryClient.saveNewBeer(beerDto);
-      assertNotNull(location);
+         URI location = breweryClient.saveNewBeer(beerDto);
+        assertNotNull(location);
+    }
+
+    @Test
+    void updateBeer() {
+        BeerDto beerDto = BeerDto.builder().id(UUID.randomUUID())
+                .beerName("wesky")
+                .beerStyle("api")
+                .build();
+        breweryClient.updateBeer(UUID.randomUUID(), beerDto);
+
+    }
+
+    @Test
+    void deleteBeer() {
+        breweryClient.deleteBeer(UUID.randomUUID());
     }
 }
