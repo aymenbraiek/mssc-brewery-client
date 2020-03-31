@@ -2,6 +2,7 @@ package com.biat.msscbreweryclient.web;
 
 import com.biat.msscbreweryclient.Model.BeerDto;
 
+import com.biat.msscbreweryclient.Model.CustomerDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,6 +19,7 @@ public class BreweryClient {
     private String apiHost;
     public final String BEER_PATH_V1 = "/api/v1/beer/";
     private final RestTemplate restTemplate;
+    public final String CUSTOMER_PATH_V1 = "/api/v1/customer/";
 
     public BreweryClient(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -42,6 +44,22 @@ public class BreweryClient {
 
     public void deleteBeer(UUID uuid) {
         restTemplate.delete(apiHost + BEER_PATH_V1 + "/" + uuid);
+    }
+
+    public CustomerDto getCustomerById(UUID customerId) {
+        return restTemplate.getForObject(apiHost + CUSTOMER_PATH_V1 + customerId.toString(), CustomerDto.class);
+    }
+
+    public URI saveNewCustomer(CustomerDto customerDto) {
+        return restTemplate.postForLocation(apiHost + CUSTOMER_PATH_V1, customerDto);
+    }
+
+    public void updateCustomer(UUID customerId, CustomerDto customerDto) {
+        restTemplate.put(apiHost + CUSTOMER_PATH_V1 + customerId, customerDto);
+    }
+
+    public void deleteCustomer(UUID customerId) {
+        restTemplate.delete(apiHost + CUSTOMER_PATH_V1 + customerId);
     }
 
 }
